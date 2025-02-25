@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=development
+    command: python app.py
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm start
+
+networks:
+  default:
+    driver: bridge
+
+# Como rodar:
+# 1. No terminal, navegue até a pasta raiz do projeto.
+# 2. Rode: docker-compose up --build
+# 3. Acesse o front-end em: http://localhost:3000
+# 4. O back-end estará em: http://localhost:5000
